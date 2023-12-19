@@ -26,36 +26,29 @@ int parse_id(Line *line) {
     int id = 0;
     while (line->text[line->position] != ':') {
         char ch = line->text[line->position];
-        if (isdigit(ch)) {
-            id = add_digit(id, ch - '0');
-        }
-        line->position++;
+        if (isdigit(ch)) id = parse_number(line);
+        else line->position++;
     }
-    return id;  // Return position after ':'
+    return id;
 }
 
-// Parses entire game from a line (returns 0 if valid game, 1 if invalid)
+// Parses entire game from a line (returns 1 if valid game, 0 if invalid)
 int check_if_valid(Line *line) {
     int curr_int = 0;
     while (line->text[line->position] != '\n') {
         char ch = line->text[line->position];
-        if (ch == ' ') {
-            line->position++;
-            continue;
-        }
         if (isdigit(ch)) {
             curr_int = parse_number(line);
         }
-        if ((ch == 'r' && curr_int > 12) || (ch == 'g' && curr_int > 13) || (ch == 'b' && curr_int > 14)) {
-            return 1;
+        else if ((ch == 'r' && curr_int > 12) || (ch == 'g' && curr_int > 13) || (ch == 'b' && curr_int > 14)) {
+            return 0;
         }
         if (ch == 'r' || ch == 'g' || ch == 'b') {
             curr_int = 0;
         }
         line->position++;
     }
-    line->position++;
-    return 0;
+    return 1;
 }
 
 // Parses game from a line and calculates "power" of game
@@ -67,29 +60,25 @@ int calculate_power_of_game(Line *line) {
 
     while (line->text[line->position] != '\n') {
         char ch = line->text[line->position];
-        if (ch == ' ') {
-            line->position++;
-            continue;
-        }
         if (isdigit(ch)) {
             curr_int = parse_number(line);
         }
-        if (ch == 'r') {
+        else if (ch == 'r') {
             if(curr_int > max_red) max_red = curr_int;
             line->position += 2;
             curr_int = 0;
         }
-        if (ch == 'g') {
+        else if (ch == 'g') {
             if(curr_int > max_green)max_green = curr_int;
             line->position += 4;
             curr_int = 0;
         }
-        if (ch == 'b') {
+        else if (ch == 'b') {
             if(curr_int > max_blue)max_blue = curr_int;
             line->position += 3;
             curr_int = 0;
         }
-        line->position++;
+        else line->position++;
     }
 
     return max_red * max_green * max_blue;
@@ -103,8 +92,9 @@ void part1_script() {
     while (fgets(line.text, sizeof(line.text), fp)) {
         line.position = 0;
         int id = parse_id(&line);
-        int failed = check_if_valid(&line);
-        if (!failed) sum += id;
+        if (check_if_valid(&line)) {
+            sum += id;
+        }
     }
 
     printf("part 1: %d\n", sum);
@@ -118,7 +108,7 @@ void part2_script(){
 
     while (fgets(line.text, sizeof(line.text), fp)) {
         line.position = 0;
-        int id = parse_id(&line);
+        parse_id(&line);
         sum += calculate_power_of_game(&line);
     }
 

@@ -18,18 +18,18 @@ typedef struct {
     long long record;
 } BigRace;
 
-int add_digit(int num, int digit) {
+int add_digit_to_int(int num, int digit) {
     return (num * 10) + digit;
 }
 
-long long add_digit_big(long long num, int digit) {
+long long add_digit_to_ll(long long num, int digit) {
     return (num * 10) + digit;
 }
 
 int parse_number(Line *line) {
     int num = 0;
     while (isdigit(line->text[line->position])) {
-        num = add_digit(num, line->text[line->position] - '0');
+        num = add_digit_to_int(num, line->text[line->position] - '0');
         line->position++;
     }
     return num;
@@ -76,7 +76,7 @@ void parse_input_as_one_race(BigRace *race) {
     fgets(line.text, 150, fp);
     while(line.text[line.position] != '\n') {
         if (isdigit(line.text[line.position])) {
-            num = add_digit_big(num, line.text[line.position] - '0');
+            num = add_digit_to_ll(num, line.text[line.position] - '0');
         }
         line.position++;
     }
@@ -89,7 +89,7 @@ void parse_input_as_one_race(BigRace *race) {
     line.position = 0;
     while(line.text[line.position] != '\n') {
         if (isdigit(line.text[line.position])) {
-            num = add_digit_big(num, line.text[line.position] - '0');
+            num = add_digit_to_ll(num, line.text[line.position] - '0');
         }
         line.position++;
     }
@@ -135,8 +135,6 @@ void part1_script() {
 void part2_script() {
     BigRace race;
     parse_input_as_one_race(&race);
-    printf("time:   %lld\n", race.time);
-    printf("record:   %lld\n", race.record);
     printf("Part 2: %d\n", calculate_ways_to_win_big_race(&race));
 
 }
