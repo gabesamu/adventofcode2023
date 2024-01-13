@@ -1,6 +1,4 @@
 # Day 2: Cube Conundrum - [problem](https://adventofcode.com/2023/day/2)
-
-
 <br>
 
 ## Input Analysis
