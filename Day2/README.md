@@ -16,8 +16,10 @@ Each game is separated into different subsets, which represent different draws. 
 The work done for solution is just scanning each line checking the cube amounts against their max. Most of the complexity lies in parsing the input properly.
 
 
-### Data Structures and Parsing
+### Code Explanation
 No data structures are needed for this problem either. I use a simple struct to hold a line of input and the current position being looked at.
+
+
 parse_id scans over the first part of the line, stopping at the colon, returns the id to be added to the running sum.
 check_if_valid holds the logic to solve part 1. It scans over the line, parsing the numbers when reached, then checks them against the color after the number. It assumes that the id has already been parsed.
 
@@ -101,7 +103,7 @@ part 2 changes the logic of the problem completely. Simplified goal is to find t
 ## Solving
 Again the separation of the game into subsets does not matter. We just need to keep track of the largest number that is on the line for each color.
 
-### Data Structures and Parsing
+### Code Explanation
 The only change here is we use a different function than check_if_valid. Also the parsed id is not actually used but the same function can be used just to parse through it.
 
 calculate_power_of_game parses the rest of the line like check_if_valid did, except now we are tracking the max of each color. The maxes are multiplied together and returned.
